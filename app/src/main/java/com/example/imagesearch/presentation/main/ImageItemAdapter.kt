@@ -14,18 +14,18 @@ import java.text.SimpleDateFormat
 class ImageItemAdapter(
 ): RecyclerView.Adapter<ImageItemAdapter.ItemViewHolder>() {
     var itemList = listOf<DocumentEntity>()
-    val dateFormat = "yyyy-MM-dd HH:mm:ss"
-    val simpleDateFormat = SimpleDateFormat(dateFormat)
     class ItemViewHolder(
         private val binding: ThumbnailItemBinding
     ): RecyclerView.ViewHolder(binding.root){
+        private val dateFormat1 = SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSSXXX")
+        private val dateFormat2 = SimpleDateFormat("yyyy-MM-dd HH:mm:ss")
         fun bind(documentEntity: DocumentEntity){
             with(binding){
                 Glide.with(binding.root)
                     .load(documentEntity.thumbnailUrl)
                     .into(ivThumbnail)
-                //ivThumbnail.setImageURI(documentEntity.thumbnailUrl.toUri())
-                tvDate.text = documentEntity.dateTime
+                val date = dateFormat1.parse(documentEntity.dateTime)
+                tvDate.text = date?.let { dateFormat2.format(it) } ?: "오류"
                 tvSource.text = documentEntity.siteName
             }
         }

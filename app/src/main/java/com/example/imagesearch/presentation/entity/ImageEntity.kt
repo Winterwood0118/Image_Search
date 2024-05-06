@@ -9,5 +9,6 @@ data class ImageModelEntity(
 data class DocumentEntity(
     val thumbnailUrl: String,
     val siteName: String,
-    val dateTime: String
+    val dateTime: String,
+    val isLike: Boolean = false
 )
