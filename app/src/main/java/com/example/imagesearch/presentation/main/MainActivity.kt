@@ -1,6 +1,7 @@
 package com.example.imagesearch.presentation.main
 
 import android.os.Bundle
+import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
 import com.example.imagesearch.R
@@ -8,19 +9,29 @@ import com.example.imagesearch.databinding.ActivityMainBinding
 
 class MainActivity : AppCompatActivity() {
     private val binding by lazy { ActivityMainBinding.inflate(layoutInflater) }
+    private val imageSearchViewModel by viewModels<ImageSearchViewModel> {
+        ImageSearchViewModelFactory()
+    }
+    private val sharedPref by lazy { getSharedPreferences(PREF_KEY, MODE_PRIVATE) }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(binding.root)
-
         initFragment()
         initButton()
-    }
-    private fun getFragmentByTag(tag: String): Fragment{
-        return supportFragmentManager.findFragmentByTag(tag)?:ImageSearchFragment()
+        loadData()
     }
 
-    private fun initFragment(){
+    override fun onStop() {
+        super.onStop()
+        saveData()
+    }
+
+    private fun getFragmentByTag(tag: String): Fragment {
+        return supportFragmentManager.findFragmentByTag(tag) ?: ImageSearchFragment()
+    }
+
+    private fun initFragment() {
         supportFragmentManager.beginTransaction().apply {
             add(R.id.frameFragment, MyBoxFragment(), "my_box")
             hide(getFragmentByTag("my_box"))
@@ -30,8 +41,8 @@ class MainActivity : AppCompatActivity() {
         }
     }
 
-    private fun initButton(){
-        with(binding){
+    private fun initButton() {
+        with(binding) {
             btnSearch.apply {
                 setOnClickListener {
                     supportFragmentManager.beginTransaction().apply {
@@ -57,6 +68,23 @@ class MainActivity : AppCompatActivity() {
                 }
             }
         }
+    }
+
+    private fun loadData() {
+        val currentSearchWord = sharedPref.getString(WORD_KEY, "") ?: ""
+        imageSearchViewModel.setLastSearchWord(currentSearchWord)
+    }
+
+    private fun saveData() {
+        val edit = sharedPref.edit()
+        val currentSearchWord = imageSearchViewModel.lastSearchWord.value ?: ""
+        edit.putString(WORD_KEY, currentSearchWord)
+        edit.apply()
+    }
+
+    companion object {
+        const val PREF_KEY = "pref_key"
+        const val WORD_KEY = "word_key"
     }
 }
 

@@ -55,7 +55,10 @@ class ImageSearchFragment : Fragment() {
                 binding.etSearch.text.clear()
                 Toast.makeText(requireActivity(), "검색어를 입력해주세요", Toast.LENGTH_SHORT).show()
             } else {
-                imageSearchViewModel.getImageModelList(string)
+                imageSearchViewModel.apply{
+                    getImageModelList(string)
+                    setLastSearchWord(string)
+                }
                 hideKeyboard()
             }
         }
@@ -76,6 +79,8 @@ class ImageSearchFragment : Fragment() {
             adapter = imageItemAdapter
             layoutManager = GridLayoutManager(requireActivity(), 2)
         }
+
+        binding.etSearch.setText(imageSearchViewModel.lastSearchWord.value)
     }
 
     override fun onDestroyView() {
