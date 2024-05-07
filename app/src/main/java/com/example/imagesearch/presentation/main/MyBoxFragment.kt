@@ -7,7 +7,6 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.viewModels
 import androidx.recyclerview.widget.GridLayoutManager
-import com.example.imagesearch.R
 import com.example.imagesearch.databinding.FragmentMyBoxBinding
 import com.example.imagesearch.presentation.entity.DocumentEntity
 

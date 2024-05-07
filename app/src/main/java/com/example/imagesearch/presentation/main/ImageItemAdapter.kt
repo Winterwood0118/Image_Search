@@ -7,7 +7,6 @@ import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.example.imagesearch.databinding.ThumbnailItemBinding
 import com.example.imagesearch.presentation.entity.DocumentEntity
-import com.example.imagesearch.presentation.entity.ImageModelEntity
 import java.text.SimpleDateFormat
 
 class ImageItemAdapter(

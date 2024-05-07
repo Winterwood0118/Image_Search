@@ -5,7 +5,6 @@ import androidx.appcompat.app.AppCompatActivity
 import com.example.imagesearch.R
 import com.example.imagesearch.databinding.ActivityMainBinding
 import com.example.imagesearch.presentation.entity.DocumentEntity
-import com.example.imagesearch.presentation.entity.ImageModelEntity
 
 class MainActivity : AppCompatActivity() {
     private val binding by lazy { ActivityMainBinding.inflate(layoutInflater) }

@@ -12,8 +12,6 @@ import androidx.fragment.app.viewModels
 import androidx.recyclerview.widget.GridLayoutManager
 import com.example.imagesearch.databinding.FragmentImageSearchBinding
 import com.example.imagesearch.presentation.entity.DocumentEntity
-import com.example.imagesearch.presentation.entity.ImageModelEntity
-import okhttp3.internal.notify
 
 
 class ImageSearchFragment : Fragment() {
