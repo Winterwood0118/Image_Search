@@ -5,6 +5,7 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.fragment.app.activityViewModels
 import androidx.fragment.app.viewModels
 import androidx.recyclerview.widget.GridLayoutManager
 import com.example.imagesearch.databinding.FragmentMyBoxBinding
@@ -16,11 +17,8 @@ class MyBoxFragment : Fragment() {
     private val pickedAdapter by lazy {
         ImageItemAdapter { image, position -> itemOnClick(image, position) }
     }
-    private val imageSearchViewModel by viewModels<ImageSearchViewModel> {
+    private val imageSearchViewModel by activityViewModels<ImageSearchViewModel> {
         ImageSearchViewModelFactory()
-    }
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
     }
 
     override fun onCreateView(
@@ -28,18 +26,20 @@ class MyBoxFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View {
         _binding = FragmentMyBoxBinding.inflate(inflater, container, false)
-        initView()
         return binding.root
     }
 
-    override fun onDestroy() {
-        super.onDestroy()
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+        initView()
+    }
+
+    override fun onDestroyView() {
+        super.onDestroyView()
         _binding = null
     }
 
     private fun initView(){
-        imageSearchViewModel.getPickedImageList()
-
         imageSearchViewModel.pickedImage.observe(requireActivity()) {
             pickedAdapter.itemList = it
             binding.rvPickedList.adapter?.notifyDataSetChanged()
@@ -52,17 +52,13 @@ class MyBoxFragment : Fragment() {
     }
 
     private fun itemOnClick(documentEntity: DocumentEntity, position: Int){
-        MainActivity.PICKED_IMAGE.remove(documentEntity)
+        imageSearchViewModel.apply{
+            removeImage(documentEntity)
+            switchLikeByUrl(documentEntity.thumbnailUrl)
+        }
         pickedAdapter.apply{
             notifyItemRemoved(position)
             notifyItemRangeChanged(position, itemCount)
         }
-    }
-    companion object {
-
-        @JvmStatic
-        fun newInstance() =
-            MyBoxFragment().apply {
-            }
     }
 }

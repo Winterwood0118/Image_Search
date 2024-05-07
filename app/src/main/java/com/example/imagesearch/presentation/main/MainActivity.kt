@@ -1,7 +1,10 @@
 package com.example.imagesearch.presentation.main
 
 import android.os.Bundle
+import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
+import androidx.fragment.app.Fragment
+import androidx.fragment.app.activityViewModels
 import com.example.imagesearch.R
 import com.example.imagesearch.databinding.ActivityMainBinding
 import com.example.imagesearch.presentation.entity.DocumentEntity
@@ -15,13 +18,17 @@ class MainActivity : AppCompatActivity() {
 
         initFragment()
         initButton()
-
+    }
+    private fun getFragmentByTag(tag: String): Fragment{
+        return supportFragmentManager.findFragmentByTag(tag)?:ImageSearchFragment()
     }
 
     private fun initFragment(){
         supportFragmentManager.beginTransaction().apply {
-            replace(R.id.frameFragment, ImageSearchFragment())
-            addToBackStack("")
+            add(R.id.frameFragment, MyBoxFragment(), "my_box")
+            hide(getFragmentByTag("my_box"))
+            add(R.id.frameFragment, ImageSearchFragment(), "search")
+            show(getFragmentByTag("search"))
             commit()
         }
     }
@@ -31,8 +38,8 @@ class MainActivity : AppCompatActivity() {
             btnSearch.apply {
                 setOnClickListener {
                     supportFragmentManager.beginTransaction().apply {
-                        replace(R.id.frameFragment, ImageSearchFragment())
-                        addToBackStack(null)
+                        hide(getFragmentByTag("my_box"))
+                        show(getFragmentByTag("search"))
                         commit()
                     }
                     btnMyBox.isClickable = true
@@ -44,7 +51,8 @@ class MainActivity : AppCompatActivity() {
             btnMyBox.apply {
                 setOnClickListener {
                     supportFragmentManager.beginTransaction().apply {
-                        replace(R.id.frameFragment, MyBoxFragment())
+                        show(getFragmentByTag("my_box"))
+                        hide(getFragmentByTag("search"))
                         commit()
                     }
                     isClickable = false
@@ -52,16 +60,6 @@ class MainActivity : AppCompatActivity() {
                 }
             }
         }
-    }
-    private fun loadData(savedInstanceState: Bundle?){
-        if (savedInstanceState != null){
-            // PICKED_IMAGE = this@MainActivity.getSharedPreferences(PICKED_LIST, MODE_PRIVATE)
-        }
-    }
-
-    companion object{
-        var PICKED_IMAGE = mutableListOf<DocumentEntity>()
-        const val PICKED_LIST = "picked_list"
     }
 }
 
@@ -91,5 +89,11 @@ presentation
 
 Try
 피그마 이용해서 레이아웃 괜찮은거 가져오기
+
+
+프래그먼트 생명주기 어떻게 처리할 지 고민 중
+1) 한번에 띄워놓고 전환만하기
+2) 띄울때 마다 재생성하기(백스택 x, saved instance 이용)
+
 
 */

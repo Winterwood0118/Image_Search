@@ -5,6 +5,8 @@
     android:layout_height="match_parent"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:padding="15dp"
+    android:background="@color/white"
+    android:clickable="true"
     tools:context=".presentation.main.MyBoxFragment">
 
     <androidx.recyclerview.widget.RecyclerView

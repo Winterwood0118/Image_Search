@@ -8,7 +8,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.view.inputmethod.InputMethodManager
 import android.widget.Toast
-import androidx.fragment.app.viewModels
+import androidx.fragment.app.activityViewModels
 import androidx.recyclerview.widget.GridLayoutManager
 import com.example.imagesearch.databinding.FragmentImageSearchBinding
 import com.example.imagesearch.presentation.entity.DocumentEntity
@@ -21,7 +21,7 @@ class ImageSearchFragment : Fragment() {
         ImageItemAdapter { documentEntity, position -> itemOnClick(documentEntity, position) }
     }
 
-    private val imageSearchViewModel by viewModels<ImageSearchViewModel> {
+    private val imageSearchViewModel by activityViewModels<ImageSearchViewModel> {
         ImageSearchViewModelFactory()
     }
 
@@ -31,7 +31,15 @@ class ImageSearchFragment : Fragment() {
     ): View {
         _binding = FragmentImageSearchBinding.inflate(inflater, container, false)
         initView()
+        savedInstanceState?.let {
+            binding.etSearch.setText(it.getString("search_word"))
+        }
         return binding.root
+    }
+
+    override fun onSaveInstanceState(outState: Bundle) {
+        super.onSaveInstanceState(outState)
+        outState.putString("search_word", binding.etSearch.text.toString())
     }
 
     private fun hideKeyboard() {
@@ -53,7 +61,14 @@ class ImageSearchFragment : Fragment() {
         }
 
         imageSearchViewModel.imageModel.observe(requireActivity()) {
-            imageItemAdapter.itemList = it
+            val newModel = mutableListOf<DocumentEntity>()
+            for (i in it){
+                if(imageSearchViewModel.findByUrl(i.thumbnailUrl)){
+                    i.isLike = true
+                }
+                newModel.add(i)
+            }
+            imageItemAdapter.itemList = newModel
             binding.rvImageList.adapter?.notifyDataSetChanged()
         }
 
@@ -70,15 +85,9 @@ class ImageSearchFragment : Fragment() {
 
     private fun itemOnClick(documentEntity: DocumentEntity, position: Int){
         documentEntity.isLike = !documentEntity.isLike
-        if (documentEntity.isLike) MainActivity.PICKED_IMAGE.add(documentEntity)
-        else MainActivity.PICKED_IMAGE.remove(documentEntity)
+        if (documentEntity.isLike) imageSearchViewModel.pickImage(documentEntity)
+        else imageSearchViewModel.removeImage(documentEntity)
         imageItemAdapter.notifyItemChanged(position)
     }
 
-    companion object {
-        @JvmStatic
-        fun newInstance() =
-            ImageSearchFragment().apply {
-            }
-    }
 }

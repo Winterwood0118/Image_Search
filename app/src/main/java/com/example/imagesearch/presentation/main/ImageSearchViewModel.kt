@@ -12,7 +12,7 @@ import com.example.imagesearch.presentation.entity.DocumentEntity
 import com.example.imagesearch.presentation.repository.SearchImageRepository
 import kotlinx.coroutines.launch
 
-class ImageSearchViewModel(private val searchImageRepository: SearchImageRepository): ViewModel() {
+class ImageSearchViewModel(private val searchImageRepository: SearchImageRepository) : ViewModel() {
     private val _getImageModel: MutableLiveData<List<DocumentEntity>> = MutableLiveData()
     val imageModel: LiveData<List<DocumentEntity>> get() = _getImageModel
 
@@ -24,12 +24,40 @@ class ImageSearchViewModel(private val searchImageRepository: SearchImageReposit
         _getImageModel.value = searchImageRepository.getImageList(searchWord).items
     }
 
-    fun getPickedImageList() = viewModelScope.launch {
-        _getPickedImage.value = MainActivity.PICKED_IMAGE
+
+    fun pickImage(documentEntity: DocumentEntity) {
+        val updateList = (_getPickedImage.value?: mutableListOf()).toMutableList()
+        updateList.add(documentEntity)
+        _getPickedImage.value = updateList
+    }
+
+    fun removeImage(documentEntity: DocumentEntity) {
+        val updateList = (_getPickedImage.value?: mutableListOf()).toMutableList()
+        updateList.remove(documentEntity)
+        _getPickedImage.value = updateList
+    }
+
+    fun switchLikeByUrl(url: String){
+        if(_getImageModel.value != null){
+            val newModel = _getImageModel.value?: mutableListOf()
+            val currentImage = newModel.find { it.thumbnailUrl == url }
+            currentImage?.let {
+                val idx = newModel.indexOf(currentImage)
+                newModel.let{
+                    it[idx].isLike = false
+                }
+                _getImageModel.value = newModel
+            }
+        }
+    }
+
+    fun findByUrl(url: String): Boolean{
+        val currentImage = _getPickedImage.value?.find { it.thumbnailUrl == url }
+        return currentImage != null
     }
 }
 
-class ImageSearchViewModelFactory: ViewModelProvider.Factory {
+class ImageSearchViewModelFactory : ViewModelProvider.Factory {
     private val repository = SearchImageRepositoryImpl(RetrofitClient.searchKakaoImage)
 
     override fun <T : ViewModel> create(
