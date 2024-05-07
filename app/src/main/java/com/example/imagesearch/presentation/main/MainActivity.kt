@@ -1,20 +1,21 @@
 package com.example.imagesearch.presentation.main
 
 import android.os.Bundle
-import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import com.example.imagesearch.R
 import com.example.imagesearch.databinding.ActivityMainBinding
+import com.example.imagesearch.presentation.entity.DocumentEntity
+import com.example.imagesearch.presentation.entity.ImageModelEntity
 
 class MainActivity : AppCompatActivity() {
     private val binding by lazy { ActivityMainBinding.inflate(layoutInflater) }
-
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(binding.root)
 
         initFragment()
+        initButton()
 
     }
 
@@ -24,6 +25,44 @@ class MainActivity : AppCompatActivity() {
             addToBackStack("")
             commit()
         }
+    }
+
+    private fun initButton(){
+        with(binding){
+            btnSearch.apply {
+                setOnClickListener {
+                    supportFragmentManager.beginTransaction().apply {
+                        replace(R.id.frameFragment, ImageSearchFragment())
+                        addToBackStack(null)
+                        commit()
+                    }
+                    btnMyBox.isClickable = true
+                    isClickable = false
+                }
+                isClickable = false
+            }
+
+            btnMyBox.apply {
+                setOnClickListener {
+                    supportFragmentManager.beginTransaction().apply {
+                        replace(R.id.frameFragment, MyBoxFragment())
+                        commit()
+                    }
+                    isClickable = false
+                    btnSearch.isClickable = true
+                }
+            }
+        }
+    }
+    private fun loadData(savedInstanceState: Bundle?){
+        if (savedInstanceState != null){
+            // PICKED_IMAGE = this@MainActivity.getSharedPreferences(PICKED_LIST, MODE_PRIVATE)
+        }
+    }
+
+    companion object{
+        var PICKED_IMAGE = mutableListOf<DocumentEntity>()
+        const val PICKED_LIST = "picked_list"
     }
 }
 
@@ -35,7 +74,7 @@ data
 1) database의 데이터를 사용 가능한 클래스로 만들기 위한 Entity ㅇ
 2) Entity 형태로 데이터를 받아오는 database ㅇ
 3) database의 정보를 저장하는 Repository ㅇ
-4) picked data를 저장하는 preference
+4) picked data를 저장하는 preference?
 
 presentation
 1) 두 프래그먼트를 얹을 main ㅇ

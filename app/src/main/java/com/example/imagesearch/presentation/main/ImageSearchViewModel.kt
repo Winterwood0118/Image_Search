@@ -16,8 +16,16 @@ class ImageSearchViewModel(private val searchImageRepository: SearchImageReposit
     private val _getImageModel: MutableLiveData<List<DocumentEntity>> = MutableLiveData()
     val imageModel: LiveData<List<DocumentEntity>> get() = _getImageModel
 
+    private val _getPickedImage: MutableLiveData<List<DocumentEntity>> = MutableLiveData()
+
+    val pickedImage: LiveData<List<DocumentEntity>> get() = _getPickedImage
+
     fun getImageModelList(searchWord: String) = viewModelScope.launch {
         _getImageModel.value = searchImageRepository.getImageList(searchWord).items
+    }
+
+    fun getPickedImageList() = viewModelScope.launch {
+        _getPickedImage.value = MainActivity.PICKED_IMAGE
     }
 }
 

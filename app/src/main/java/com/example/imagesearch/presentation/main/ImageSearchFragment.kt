@@ -11,12 +11,17 @@ import android.widget.Toast
 import androidx.fragment.app.viewModels
 import androidx.recyclerview.widget.GridLayoutManager
 import com.example.imagesearch.databinding.FragmentImageSearchBinding
+import com.example.imagesearch.presentation.entity.DocumentEntity
+import com.example.imagesearch.presentation.entity.ImageModelEntity
+import okhttp3.internal.notify
 
 
 class ImageSearchFragment : Fragment() {
     private var _binding: FragmentImageSearchBinding? = null
     private val binding get() = _binding!!
-    private lateinit var imageItemAdapter: ImageItemAdapter
+    private val imageItemAdapter: ImageItemAdapter by lazy {
+        ImageItemAdapter { documentEntity, position -> itemOnClick(documentEntity, position) }
+    }
 
     private val imageSearchViewModel by viewModels<ImageSearchViewModel> {
         ImageSearchViewModelFactory()
@@ -38,7 +43,6 @@ class ImageSearchFragment : Fragment() {
     }
 
     private fun initView() {
-        imageItemAdapter = ImageItemAdapter()
         binding.btnSearch.setOnClickListener {
             val string = binding.etSearch.text.toString()
             if (string.replace(" ", "") == "") {
@@ -64,6 +68,13 @@ class ImageSearchFragment : Fragment() {
     override fun onDestroyView() {
         super.onDestroyView()
         _binding = null
+    }
+
+    private fun itemOnClick(documentEntity: DocumentEntity, position: Int){
+        documentEntity.isLike = !documentEntity.isLike
+        if (documentEntity.isLike) MainActivity.PICKED_IMAGE.add(documentEntity)
+        else MainActivity.PICKED_IMAGE.remove(documentEntity)
+        imageItemAdapter.notifyItemChanged(position)
     }
 
     companion object {

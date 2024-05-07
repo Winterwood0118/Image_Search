@@ -10,5 +10,5 @@ data class DocumentEntity(
     val thumbnailUrl: String,
     val siteName: String,
     val dateTime: String,
-    val isLike: Boolean = false
+    var isLike: Boolean = false
 )

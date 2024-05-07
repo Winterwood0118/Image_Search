@@ -10,7 +10,7 @@ interface SearchRemoteDataSource {
     suspend fun getImage(
         @Query("query") searchWord: String,
         @Query("page") page: Int = 1,
-        @Query("size") size: Int = 10,
+        @Query("size") size: Int = 80,
         @Header("Authorization") key: String = "KakaoAK 9982187f033a2c4ec2ff283fb4ac687c"
     ): ImageModel
 }
