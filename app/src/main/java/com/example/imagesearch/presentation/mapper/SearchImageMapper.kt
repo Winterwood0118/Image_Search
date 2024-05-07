@@ -4,7 +4,6 @@ import com.example.imagesearch.data.remote.Documents
 import com.example.imagesearch.data.remote.ImageModel
 import com.example.imagesearch.presentation.entity.DocumentEntity
 import com.example.imagesearch.presentation.entity.ImageModelEntity
-import com.example.imagesearch.presentation.main.ImageSearchViewModel
 
 fun List<Documents>.asEntity(): List<DocumentEntity> {
     return map {

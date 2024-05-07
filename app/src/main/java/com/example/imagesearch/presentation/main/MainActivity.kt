@@ -1,13 +1,10 @@
 package com.example.imagesearch.presentation.main
 
 import android.os.Bundle
-import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
-import androidx.fragment.app.activityViewModels
 import com.example.imagesearch.R
 import com.example.imagesearch.databinding.ActivityMainBinding
-import com.example.imagesearch.presentation.entity.DocumentEntity
 
 class MainActivity : AppCompatActivity() {
     private val binding by lazy { ActivityMainBinding.inflate(layoutInflater) }
