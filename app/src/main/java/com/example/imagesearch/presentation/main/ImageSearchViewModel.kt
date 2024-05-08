@@ -29,7 +29,14 @@ class ImageSearchViewModel(private val searchImageRepository: SearchImageReposit
     }
 
     fun getImageModelList(searchWord: String) = viewModelScope.launch {
-        _getImageModel.value = searchImageRepository.getImageList(searchWord).items
+        _getImageModel.value = searchImageRepository.getImageList(searchWord).items.map {
+            DocumentEntity(
+                thumbnailUrl = it.thumbnailUrl,
+                dateTime = it.dateTime,
+                siteName = it.siteName,
+                isLike = findByUrl(it.thumbnailUrl)
+            )
+        }
     }
 
 
@@ -59,7 +66,7 @@ class ImageSearchViewModel(private val searchImageRepository: SearchImageReposit
         }
     }
 
-    fun findByUrl(url: String): Boolean{
+    private fun findByUrl(url: String): Boolean{
         val currentImage = _getPickedImage.value?.find { it.thumbnailUrl == url }
         return currentImage != null
     }

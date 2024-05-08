@@ -64,14 +64,7 @@ class ImageSearchFragment : Fragment() {
         }
 
         imageSearchViewModel.imageModel.observe(requireActivity()) {
-            val newModel = mutableListOf<DocumentEntity>()
-            for (i in it) {
-                if (imageSearchViewModel.findByUrl(i.thumbnailUrl)) {
-                    i.isLike = true
-                }
-                newModel.add(i)
-            }
-            imageItemAdapter.itemList = newModel
+            imageItemAdapter.itemList = it
             binding.rvImageList.adapter?.notifyDataSetChanged()
         }
 
