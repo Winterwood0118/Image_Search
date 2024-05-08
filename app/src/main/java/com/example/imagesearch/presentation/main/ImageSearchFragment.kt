@@ -55,7 +55,7 @@ class ImageSearchFragment : Fragment() {
                 binding.etSearch.text.clear()
                 Toast.makeText(requireActivity(), "검색어를 입력해주세요", Toast.LENGTH_SHORT).show()
             } else {
-                imageSearchViewModel.apply{
+                imageSearchViewModel.apply {
                     getImageModelList(string)
                     setLastSearchWord(string)
                 }
@@ -65,8 +65,8 @@ class ImageSearchFragment : Fragment() {
 
         imageSearchViewModel.imageModel.observe(requireActivity()) {
             val newModel = mutableListOf<DocumentEntity>()
-            for (i in it){
-                if(imageSearchViewModel.findByUrl(i.thumbnailUrl)){
+            for (i in it) {
+                if (imageSearchViewModel.findByUrl(i.thumbnailUrl)) {
                     i.isLike = true
                 }
                 newModel.add(i)
@@ -88,7 +88,7 @@ class ImageSearchFragment : Fragment() {
         _binding = null
     }
 
-    private fun itemOnClick(documentEntity: DocumentEntity, position: Int){
+    private fun itemOnClick(documentEntity: DocumentEntity, position: Int) {
         documentEntity.isLike = !documentEntity.isLike
         if (documentEntity.isLike) imageSearchViewModel.pickImage(documentEntity)
         else imageSearchViewModel.removeImage(documentEntity)

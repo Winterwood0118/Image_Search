@@ -7,7 +7,11 @@ import androidx.fragment.app.Fragment
 import com.example.imagesearch.R
 import com.example.imagesearch.databinding.ActivityMainBinding
 
+private const val PREF_KEY = "pref_key"
+private const val WORD_KEY = "word_key"
+
 class MainActivity : AppCompatActivity() {
+
     private val binding by lazy { ActivityMainBinding.inflate(layoutInflater) }
     private val imageSearchViewModel by viewModels<ImageSearchViewModel> {
         ImageSearchViewModelFactory()
@@ -80,11 +84,6 @@ class MainActivity : AppCompatActivity() {
         val currentSearchWord = imageSearchViewModel.lastSearchWord.value ?: ""
         edit.putString(WORD_KEY, currentSearchWord)
         edit.apply()
-    }
-
-    companion object {
-        const val PREF_KEY = "pref_key"
-        const val WORD_KEY = "word_key"
     }
 }
 
