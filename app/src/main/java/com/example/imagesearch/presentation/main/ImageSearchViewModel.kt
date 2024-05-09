@@ -16,6 +16,7 @@ class ImageSearchViewModel(private val searchImageRepository: SearchImageReposit
     private val _getImageModel: MutableLiveData<List<DocumentEntity>> = MutableLiveData()
     val imageModel: LiveData<List<DocumentEntity>> get() = _getImageModel
 
+
     private val _getPickedImage: MutableLiveData<List<DocumentEntity>> = MutableLiveData()
 
     val pickedImage: LiveData<List<DocumentEntity>> get() = _getPickedImage
