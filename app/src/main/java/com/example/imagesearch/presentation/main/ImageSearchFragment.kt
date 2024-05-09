@@ -21,9 +21,7 @@ class ImageSearchFragment : Fragment() {
         ImageItemAdapter { documentEntity, position -> itemOnClick(documentEntity, position) }
     }
 
-    private val imageSearchViewModel by activityViewModels<ImageSearchViewModel> {
-        ImageSearchViewModelFactory()
-    }
+    private val imageSearchViewModel by activityViewModels<ImageSearchViewModel> ()
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
