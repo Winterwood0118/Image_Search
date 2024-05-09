@@ -9,7 +9,7 @@
         android:id="@+id/ivThumbnail"
         android:layout_width="match_parent"
         android:layout_height="160dp"
-        android:scaleType="centerCrop"
+        android:scaleType="fitCenter"
         android:src="@color/black"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -27,19 +27,20 @@
 
     <TextView
         android:id="@+id/tvSource"
-        android:layout_width="wrap_content"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginTop="10dp"
-        android:text="네이버 블로그"
+        android:text="@string/search_item_text"
+        android:maxLines="1"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/ivThumbnail" />
 
     <TextView
         android:id="@+id/tvDate"
-        android:layout_width="wrap_content"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:text="yyyy-MM-dd HH:mm:ss"
+        android:text="@string/search_item_date"
         android:layout_marginTop="10dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
