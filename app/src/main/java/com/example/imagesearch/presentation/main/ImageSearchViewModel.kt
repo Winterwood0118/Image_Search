@@ -30,12 +30,13 @@ class ImageSearchViewModel(private val searchImageRepository: SearchImageReposit
     }
 
     fun getImageModelList(searchWord: String) = viewModelScope.launch {
-        _getImageModel.value = searchImageRepository.getImageList(searchWord).items.map {
+        _getImageModel.value = searchImageRepository.getEntityList(searchWord).items.map {
             DocumentEntity(
                 thumbnailUrl = it.thumbnailUrl,
                 dateTime = it.dateTime,
                 siteName = it.siteName,
-                isLike = findByUrl(it.thumbnailUrl)
+                isLike = findByUrl(it.thumbnailUrl),
+                type = it.type
             )
         }
     }

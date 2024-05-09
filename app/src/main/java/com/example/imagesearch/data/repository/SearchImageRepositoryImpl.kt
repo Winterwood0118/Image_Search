@@ -8,7 +8,13 @@ import com.example.imagesearch.presentation.mapper.toEntity
 class SearchImageRepositoryImpl(
     private val dataSource: SearchRemoteDataSource
 ): SearchImageRepository {
-    override suspend fun getImageList(searchWord: String): ImageModelEntity {
-        return dataSource.getImage(searchWord).toEntity()
+    override suspend fun getEntityList(searchWord: String): ImageModelEntity {
+        val imageList = dataSource.getImage(searchWord).toEntity()
+        val videoList = dataSource.getVideo(searchWord).toEntity()
+
+        return ImageModelEntity(
+            imageList.meta,
+            (imageList.items + videoList.items).sortedByDescending { it.dateTime }
+        )
     }
 }
