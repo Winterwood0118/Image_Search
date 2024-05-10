@@ -29,15 +29,7 @@ class ImageSearchFragment : Fragment() {
     ): View {
         _binding = FragmentImageSearchBinding.inflate(inflater, container, false)
         initView()
-        savedInstanceState?.let {
-            binding.etSearch.setText(it.getString("search_word"))
-        }
         return binding.root
-    }
-
-    override fun onSaveInstanceState(outState: Bundle) {
-        super.onSaveInstanceState(outState)
-        outState.putString("search_word", binding.etSearch.text.toString())
     }
 
     private fun hideKeyboard() {
@@ -70,7 +62,6 @@ class ImageSearchFragment : Fragment() {
             adapter = imageItemAdapter
             layoutManager = GridLayoutManager(requireActivity(), 2)
         }
-
         binding.etSearch.setText(imageSearchViewModel.lastSearchWord.value)
     }
 
@@ -85,5 +76,4 @@ class ImageSearchFragment : Fragment() {
         else imageSearchViewModel.removeImage(documentEntity)
         imageItemAdapter.notifyItemChanged(position)
     }
-
 }

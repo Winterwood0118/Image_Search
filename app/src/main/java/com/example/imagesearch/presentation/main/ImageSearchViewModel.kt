@@ -24,10 +24,11 @@ class ImageSearchViewModel(private val searchImageRepository: SearchImageReposit
 
     val lastSearchWord: LiveData<String> get() = _getLastSearchWord
 
-    fun setLastSearchWord(searchWord: String){
+    fun setLastSearchWord(searchWord: String) {
         _getLastSearchWord.value = searchWord
     }
 
+    // 서버로부터 데이터를 받아올 때 마다 저장된 리스트에 중복된 섬네일 url있는지 검사해서 좋아요 값 변경
     fun getImageModelList(searchWord: String) = viewModelScope.launch {
         _getImageModel.value = searchImageRepository.getImageList(searchWord).items.map {
             DocumentEntity(
@@ -41,32 +42,33 @@ class ImageSearchViewModel(private val searchImageRepository: SearchImageReposit
 
 
     fun pickImage(documentEntity: DocumentEntity) {
-        val updateList = (_getPickedImage.value?: mutableListOf()).toMutableList()
+        val updateList = (_getPickedImage.value ?: mutableListOf()).toMutableList()
         updateList.add(documentEntity)
         _getPickedImage.value = updateList
     }
 
     fun removeImage(documentEntity: DocumentEntity) {
-        val updateList = (_getPickedImage.value?: mutableListOf()).toMutableList()
+        val updateList = (_getPickedImage.value ?: mutableListOf()).toMutableList()
         updateList.remove(documentEntity)
         _getPickedImage.value = updateList
     }
 
-    fun switchLikeByUrl(url: String){
-        if(_getImageModel.value != null){
-            val newModel = _getImageModel.value?: mutableListOf()
+    // 단순하게 해당 model의 value의 해당 인덱스의 좋아요 값을 바꾸는걸로는 observe패턴에서 변화로 감지하지 않아 새 모델을 할당
+    fun switchLikeByUrl(url: String) {
+        if (_getImageModel.value != null) {
+            val newModel = _getImageModel.value ?: mutableListOf()
             val currentImage = newModel.find { it.thumbnailUrl == url }
             currentImage?.let {
                 val idx = newModel.indexOf(currentImage)
-                newModel.let{
+                newModel.let {
                     it[idx].isLike = false
                 }
                 _getImageModel.value = newModel
             }
         }
     }
-
-    private fun findByUrl(url: String): Boolean{
+    //Uri 받아서 T/F 반환
+    private fun findByUrl(url: String): Boolean {
         val currentImage = _getPickedImage.value?.find { it.thumbnailUrl == url }
         return currentImage != null
     }
