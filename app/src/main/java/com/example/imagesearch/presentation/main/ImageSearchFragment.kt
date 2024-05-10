@@ -10,6 +10,7 @@ import android.view.inputmethod.InputMethodManager
 import android.widget.Toast
 import androidx.fragment.app.activityViewModels
 import androidx.recyclerview.widget.GridLayoutManager
+import androidx.recyclerview.widget.StaggeredGridLayoutManager
 import com.example.imagesearch.databinding.FragmentImageSearchBinding
 import com.example.imagesearch.presentation.entity.DocumentEntity
 
@@ -68,7 +69,8 @@ class ImageSearchFragment : Fragment() {
 
         binding.rvImageList.apply {
             adapter = imageItemAdapter
-            layoutManager = GridLayoutManager(requireActivity(), 2)
+//            layoutManager = GridLayoutManager(requireActivity(), 2)
+            layoutManager = StaggeredGridLayoutManager(2, StaggeredGridLayoutManager.VERTICAL)
         }
 
         binding.etSearch.setText(imageSearchViewModel.lastSearchWord.value)

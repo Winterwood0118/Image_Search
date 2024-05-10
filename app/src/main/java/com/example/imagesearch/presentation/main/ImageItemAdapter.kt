@@ -59,5 +59,6 @@ class ImageItemAdapter(
 
     override fun onBindViewHolder(holder: ItemViewHolder, position: Int) {
         holder.bind(itemList[position], position)
+        holder.itemView.layoutParams.height = ViewGroup.LayoutParams.WRAP_CONTENT
     }
 }

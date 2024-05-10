@@ -9,6 +9,6 @@ data class VideoModel(
 
 data class VideoDocuments(
     @SerializedName("thumbnail") val thumbnailUrl: String,
-    @SerializedName("author") val siteName: String,
+    @SerializedName("title") val title: String,
     @SerializedName("datetime") val dateTime: String
 )

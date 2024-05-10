@@ -2,7 +2,7 @@ package com.example.imagesearch.presentation.entity
 
 import com.example.imagesearch.data.remote.Meta
 
-data class ImageModelEntity(
+data class SearchModelEntity(
     val meta: Meta,
     val items: List<DocumentEntity>
 )

@@ -1,7 +1,7 @@
 package com.example.imagesearch.presentation.repository
 
-import com.example.imagesearch.presentation.entity.ImageModelEntity
+import com.example.imagesearch.presentation.entity.SearchModelEntity
 
 interface SearchImageRepository {
-    suspend fun getEntityList(searchWord: String) : ImageModelEntity
+    suspend fun getEntityList(searchWord: String) : SearchModelEntity
 }
