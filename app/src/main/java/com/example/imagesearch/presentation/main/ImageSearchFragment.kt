@@ -55,7 +55,7 @@ class ImageSearchFragment : Fragment() {
 
         imageSearchViewModel.imageModel.observe(requireActivity()) {
             imageItemAdapter.itemList = it
-            binding.rvImageList.adapter?.notifyDataSetChanged()
+            imageItemAdapter.notifyDataSetChanged()
         }
 
         binding.rvImageList.apply {
