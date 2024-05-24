@@ -1,7 +1,5 @@
 package com.example.imagesearch.presentation.entity
 
-import com.example.imagesearch.data.remote.MetaResponse
-
 data class ImageModel(
     val meta: MetaModel,
     val items: List<DocumentModel>
