@@ -11,7 +11,7 @@ import android.widget.Toast
 import androidx.fragment.app.activityViewModels
 import androidx.recyclerview.widget.GridLayoutManager
 import com.example.imagesearch.databinding.FragmentImageSearchBinding
-import com.example.imagesearch.presentation.entity.DocumentEntity
+import com.example.imagesearch.presentation.entity.DocumentModel
 
 
 class ImageSearchFragment : Fragment() {
@@ -70,7 +70,7 @@ class ImageSearchFragment : Fragment() {
         _binding = null
     }
 
-    private fun itemOnClick(documentEntity: DocumentEntity, position: Int) {
+    private fun itemOnClick(documentEntity: DocumentModel, position: Int) {
         documentEntity.isLike = !documentEntity.isLike
         if (documentEntity.isLike) imageSearchViewModel.pickImage(documentEntity)
         else imageSearchViewModel.removeImage(documentEntity)

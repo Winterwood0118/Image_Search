@@ -2,7 +2,8 @@ plugins {
     alias(libs.plugins.androidApplication)
     alias(libs.plugins.jetbrainsKotlinAndroid)
     id("kotlin-parcelize")
-    id("com.google.devtools.ksp")
+    alias(libs.plugins.ksp)
+    alias(libs.plugins.hilt)
 }
 
 android {
@@ -41,9 +42,19 @@ android {
 }
 
 dependencies {
-    implementation(libs.glide)
-    implementation(libs.converter.gson)
+    //retrofit
     implementation(libs.retrofit)
+    //glide
+    implementation(libs.glide)
+    //hilt
+    implementation(libs.hilt)
+    ksp(libs.hilt.compiler)
+    //room
+    implementation(libs.room.runtime)
+    implementation(libs.room.paging)
+    ksp(libs.room.compiler)
+
+    implementation(libs.converter.gson)
     implementation(libs.gson)
     implementation(libs.logging.interceptor)
     implementation(libs.androidx.core.ktx)

@@ -8,7 +8,7 @@ import android.view.ViewGroup
 import androidx.fragment.app.activityViewModels
 import androidx.recyclerview.widget.GridLayoutManager
 import com.example.imagesearch.databinding.FragmentMyBoxBinding
-import com.example.imagesearch.presentation.entity.DocumentEntity
+import com.example.imagesearch.presentation.entity.DocumentModel
 
 class MyBoxFragment : Fragment() {
     private var _binding: FragmentMyBoxBinding? = null
@@ -48,7 +48,7 @@ class MyBoxFragment : Fragment() {
         }
     }
 
-    private fun itemOnClick(documentEntity: DocumentEntity, position: Int){
+    private fun itemOnClick(documentEntity: DocumentModel, position: Int){
         imageSearchViewModel.apply{
             removeImage(documentEntity)
             switchLikeByUrl(documentEntity.thumbnailUrl)

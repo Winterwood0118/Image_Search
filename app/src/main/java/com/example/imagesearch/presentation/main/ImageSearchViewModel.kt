@@ -8,17 +8,17 @@ import androidx.lifecycle.viewModelScope
 import androidx.lifecycle.viewmodel.CreationExtras
 import com.example.imagesearch.data.repository.SearchImageRepositoryImpl
 import com.example.imagesearch.network.RetrofitClient
-import com.example.imagesearch.presentation.entity.DocumentEntity
+import com.example.imagesearch.presentation.entity.DocumentModel
 import com.example.imagesearch.presentation.repository.SearchImageRepository
 import kotlinx.coroutines.launch
 
 class ImageSearchViewModel(private val searchImageRepository: SearchImageRepository) : ViewModel() {
-    private val _getImageModel: MutableLiveData<List<DocumentEntity>> = MutableLiveData()
-    val imageModel: LiveData<List<DocumentEntity>> get() = _getImageModel
+    private val _getImageModel: MutableLiveData<List<DocumentModel>> = MutableLiveData()
+    val imageModel: LiveData<List<DocumentModel>> get() = _getImageModel
 
-    private val _getPickedImage: MutableLiveData<List<DocumentEntity>> = MutableLiveData()
+    private val _getPickedImage: MutableLiveData<List<DocumentModel>> = MutableLiveData()
 
-    val pickedImage: LiveData<List<DocumentEntity>> get() = _getPickedImage
+    val pickedImage: LiveData<List<DocumentModel>> get() = _getPickedImage
 
     private val _getLastSearchWord: MutableLiveData<String> = MutableLiveData()
 
@@ -31,7 +31,7 @@ class ImageSearchViewModel(private val searchImageRepository: SearchImageReposit
     // 서버로부터 데이터를 받아올 때 마다 저장된 리스트에 중복된 섬네일 url있는지 검사해서 좋아요 값 변경
     fun getImageModelList(searchWord: String) = viewModelScope.launch {
         _getImageModel.value = searchImageRepository.getImageList(searchWord).items.map {
-            DocumentEntity(
+            DocumentModel(
                 thumbnailUrl = it.thumbnailUrl,
                 dateTime = it.dateTime,
                 siteName = it.siteName,
@@ -41,13 +41,13 @@ class ImageSearchViewModel(private val searchImageRepository: SearchImageReposit
     }
 
 
-    fun pickImage(documentEntity: DocumentEntity) {
+    fun pickImage(documentEntity: DocumentModel) {
         val updateList = (_getPickedImage.value ?: mutableListOf()).toMutableList()
         updateList.add(documentEntity)
         _getPickedImage.value = updateList
     }
 
-    fun removeImage(documentEntity: DocumentEntity) {
+    fun removeImage(documentEntity: DocumentModel) {
         val updateList = (_getPickedImage.value ?: mutableListOf()).toMutableList()
         updateList.remove(documentEntity)
         _getPickedImage.value = updateList

@@ -6,20 +6,20 @@ import androidx.core.view.isVisible
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.example.imagesearch.databinding.ThumbnailItemBinding
-import com.example.imagesearch.presentation.entity.DocumentEntity
+import com.example.imagesearch.presentation.entity.DocumentModel
 import java.text.SimpleDateFormat
 
 class ImageItemAdapter(
-    private val onClick: (DocumentEntity, Int) -> Unit
+    private val onClick: (DocumentModel, Int) -> Unit
 ): RecyclerView.Adapter<ImageItemAdapter.ItemViewHolder>() {
-    var itemList = listOf<DocumentEntity>()
+    var itemList = listOf<DocumentModel>()
     class ItemViewHolder(
         private val binding: ThumbnailItemBinding,
-        val onClick: (DocumentEntity, Int) -> Unit
+        val onClick: (DocumentModel, Int) -> Unit
     ): RecyclerView.ViewHolder(binding.root){
         private val dateFormat1 = SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSSXXX")
         private val dateFormat2 = SimpleDateFormat("yyyy-MM-dd HH:mm:ss")
-        private var currentItem: DocumentEntity? = null
+        private var currentItem: DocumentModel? = null
         private var currentPosition = -1
 
         init {
@@ -30,7 +30,7 @@ class ImageItemAdapter(
             }
         }
 
-        fun bind(documentEntity: DocumentEntity, position: Int){
+        fun bind(documentEntity: DocumentModel, position: Int){
             currentItem = documentEntity
             currentPosition = position
             with(binding){
