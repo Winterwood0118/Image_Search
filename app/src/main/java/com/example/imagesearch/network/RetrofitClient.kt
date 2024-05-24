@@ -22,6 +22,7 @@ object RetrofitClient {
             .readTimeout(20,TimeUnit.SECONDS)
             .writeTimeout(20, TimeUnit.SECONDS)
             .addNetworkInterceptor(interceptor)
+            .addInterceptor(AuthorizationInterceptor())
             .build()
     }
 
