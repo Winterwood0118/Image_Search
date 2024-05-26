@@ -1,6 +1,6 @@
-package com.example.imagesearch.data.database
+package com.example.imagesearch.data.remote
 
-import com.example.imagesearch.data.remote.ImageResponse
+import com.example.imagesearch.data.model.ImageResponse
 import retrofit2.http.GET
 import retrofit2.http.Query
 

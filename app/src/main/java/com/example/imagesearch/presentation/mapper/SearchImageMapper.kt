@@ -1,8 +1,8 @@
 package com.example.imagesearch.presentation.mapper
 
-import com.example.imagesearch.data.remote.DocumentsResponse
-import com.example.imagesearch.data.remote.ImageResponse
-import com.example.imagesearch.data.remote.MetaResponse
+import com.example.imagesearch.data.model.DocumentsResponse
+import com.example.imagesearch.data.model.ImageResponse
+import com.example.imagesearch.data.model.MetaResponse
 import com.example.imagesearch.presentation.entity.DocumentModel
 import com.example.imagesearch.presentation.entity.ImageModel
 import com.example.imagesearch.presentation.entity.MetaModel

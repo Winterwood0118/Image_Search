@@ -6,16 +6,15 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
 import com.example.imagesearch.R
 import com.example.imagesearch.databinding.ActivityMainBinding
+import dagger.hilt.android.AndroidEntryPoint
 
 private const val PREF_KEY = "pref_key"
 private const val WORD_KEY = "word_key"
-
+@AndroidEntryPoint
 class MainActivity : AppCompatActivity() {
 
     private val binding by lazy { ActivityMainBinding.inflate(layoutInflater) }
-    private val imageSearchViewModel by viewModels<ImageSearchViewModel> {
-        ImageSearchViewModelFactory()
-    }
+    private val imageSearchViewModel by viewModels<ImageSearchViewModel> ()
     private val sharedPref by lazy { getSharedPreferences(PREF_KEY, MODE_PRIVATE) }
 
     override fun onCreate(savedInstanceState: Bundle?) {

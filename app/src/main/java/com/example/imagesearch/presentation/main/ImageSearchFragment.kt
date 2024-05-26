@@ -12,7 +12,9 @@ import androidx.fragment.app.activityViewModels
 import androidx.recyclerview.widget.GridLayoutManager
 import com.example.imagesearch.databinding.FragmentImageSearchBinding
 import com.example.imagesearch.presentation.entity.DocumentModel
+import dagger.hilt.android.AndroidEntryPoint
 
+@AndroidEntryPoint
 
 class ImageSearchFragment : Fragment() {
     private var _binding: FragmentImageSearchBinding? = null

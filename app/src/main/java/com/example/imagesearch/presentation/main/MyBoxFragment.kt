@@ -9,6 +9,9 @@ import androidx.fragment.app.activityViewModels
 import androidx.recyclerview.widget.GridLayoutManager
 import com.example.imagesearch.databinding.FragmentMyBoxBinding
 import com.example.imagesearch.presentation.entity.DocumentModel
+import dagger.hilt.android.AndroidEntryPoint
+
+@AndroidEntryPoint
 
 class MyBoxFragment : Fragment() {
     private var _binding: FragmentMyBoxBinding? = null

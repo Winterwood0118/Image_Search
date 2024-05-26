@@ -3,16 +3,16 @@ package com.example.imagesearch.presentation.main
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
-import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.viewModelScope
-import androidx.lifecycle.viewmodel.CreationExtras
-import com.example.imagesearch.data.repository.SearchImageRepositoryImpl
-import com.example.imagesearch.network.RetrofitClient
 import com.example.imagesearch.presentation.entity.DocumentModel
 import com.example.imagesearch.presentation.repository.SearchImageRepository
+import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.launch
+import javax.inject.Inject
 
-class ImageSearchViewModel(private val searchImageRepository: SearchImageRepository) : ViewModel() {
+@HiltViewModel
+class ImageSearchViewModel @Inject constructor(private val searchImageRepository: SearchImageRepository) :
+    ViewModel() {
     private val _getImageModel: MutableLiveData<List<DocumentModel>> = MutableLiveData()
     val imageModel: LiveData<List<DocumentModel>> get() = _getImageModel
 
@@ -67,22 +67,10 @@ class ImageSearchViewModel(private val searchImageRepository: SearchImageReposit
             }
         }
     }
+
     //Uri 받아서 T/F 반환
     private fun findByUrl(url: String): Boolean {
         val currentImage = _getPickedImage.value?.find { it.thumbnailUrl == url }
         return currentImage != null
-    }
-}
-
-class ImageSearchViewModelFactory : ViewModelProvider.Factory {
-    private val repository = SearchImageRepositoryImpl(RetrofitClient.searchKakaoImage)
-
-    override fun <T : ViewModel> create(
-        modelClass: Class<T>,
-        extras: CreationExtras
-    ): T {
-        return ImageSearchViewModel(
-            repository
-        ) as T
     }
 }

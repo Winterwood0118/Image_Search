@@ -1,4 +1,4 @@
-package com.example.imagesearch.data.remote
+package com.example.imagesearch.data.model
 
 import com.google.gson.annotations.SerializedName
 
