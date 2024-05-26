@@ -10,9 +10,9 @@ import com.example.imagesearch.presentation.entity.MetaModel
 fun List<DocumentsResponse>.asModel(): List<DocumentModel> {
     return map {
         DocumentModel(
-            it.thumbnailUrl,
-            it.siteName,
-            it.dateTime
+            thumbnailUrl = it.thumbnailUrl,
+            siteName = it.siteName,
+            dateTime = it.dateTime
         )
     }
 }

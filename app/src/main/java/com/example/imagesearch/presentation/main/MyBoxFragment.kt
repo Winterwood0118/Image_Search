@@ -54,11 +54,7 @@ class MyBoxFragment : Fragment() {
     private fun itemOnClick(documentEntity: DocumentModel, position: Int){
         imageSearchViewModel.apply{
             removeImage(documentEntity)
-            switchLikeByUrl(documentEntity.thumbnailUrl)
         }
-        pickedAdapter.apply{
-            notifyItemRemoved(position)
-            notifyItemRangeChanged(position, itemCount)
-        }
+        pickedAdapter.notifyItemRemoved(position)
     }
 }

@@ -40,9 +40,6 @@ class ImageItemAdapter(
                 val date = dateFormat1.parse(documentEntity.dateTime)
                 tvDate.text = date?.let { dateFormat2.format(it) } ?: "오류"
                 tvSource.text = documentEntity.siteName
-                ivHeart.apply {
-                    isVisible = currentItem?.isLike?: false
-                }
             }
         }
     }

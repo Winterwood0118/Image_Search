@@ -73,9 +73,10 @@ class ImageSearchFragment : Fragment() {
     }
 
     private fun itemOnClick(documentEntity: DocumentModel, position: Int) {
-        documentEntity.isLike = !documentEntity.isLike
-        if (documentEntity.isLike) imageSearchViewModel.pickImage(documentEntity)
-        else imageSearchViewModel.removeImage(documentEntity)
-        imageItemAdapter.notifyItemChanged(position)
+        imageSearchViewModel.apply {
+            pickImage(documentEntity)
+
+            getKLikeThumbnailList()
+        }
     }
 }

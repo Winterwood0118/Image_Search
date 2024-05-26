@@ -7,8 +7,7 @@ data class ImageModel(
 data class DocumentModel(
     val thumbnailUrl: String,
     val siteName: String,
-    val dateTime: String,
-    var isLike: Boolean = false
+    val dateTime: String
 )
 data class MetaModel(
     val isEnd: Boolean,
