@@ -77,7 +77,6 @@ class MainActivity : AppCompatActivity() {
     private fun loadData() { // shared preference에서 마지막 검색기록 불러와서 viewModel에 저장
         val currentSearchWord = sharedPref.getString(WORD_KEY, "") ?: ""
         imageSearchViewModel.setLastSearchWord(currentSearchWord)
-        imageSearchViewModel.getKLikeThumbnailList()
     }
 
     private fun saveData() { // viewModel에서 마지막 검색기록 가지고 와서 shared preferenc에 저장

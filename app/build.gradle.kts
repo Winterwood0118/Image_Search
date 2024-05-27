@@ -48,6 +48,7 @@ dependencies {
     implementation(libs.glide)
     //hilt
     implementation(libs.hilt)
+    implementation(libs.androidx.paging.runtime.ktx)
     ksp(libs.hilt.compiler)
     //room
     implementation(libs.room.runtime)
