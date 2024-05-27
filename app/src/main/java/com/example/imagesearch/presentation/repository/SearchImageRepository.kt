@@ -1,7 +1,11 @@
 package com.example.imagesearch.presentation.repository
 
-import com.example.imagesearch.presentation.entity.ImageModelEntity
+import androidx.paging.PagingData
+import com.example.imagesearch.presentation.entity.DocumentModel
+import com.example.imagesearch.presentation.entity.ImageModel
+import kotlinx.coroutines.flow.Flow
 
 interface SearchImageRepository {
-    suspend fun getImageList(searchWord: String) : ImageModelEntity
+    suspend fun getImageList(searchWord: String) : ImageModel
+    suspend fun getPagingImageList(searchWord: String): Flow<PagingData<DocumentModel>>
 }

@@ -6,9 +6,15 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.activityViewModels
+import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.GridLayoutManager
 import com.example.imagesearch.databinding.FragmentMyBoxBinding
-import com.example.imagesearch.presentation.entity.DocumentEntity
+import com.example.imagesearch.presentation.entity.DocumentModel
+import dagger.hilt.android.AndroidEntryPoint
+import kotlinx.coroutines.flow.collectLatest
+import kotlinx.coroutines.launch
+
+@AndroidEntryPoint
 
 class MyBoxFragment : Fragment() {
     private var _binding: FragmentMyBoxBinding? = null
@@ -37,9 +43,11 @@ class MyBoxFragment : Fragment() {
     }
 
     private fun initView(){
-        imageSearchViewModel.pickedImage.observe(requireActivity()) {
-            pickedAdapter.itemList = it
-            binding.rvPickedList.adapter?.notifyDataSetChanged()
+        viewLifecycleOwner.lifecycleScope.launchWhenResumed {
+            imageSearchViewModel.likedFlow.collectLatest {
+                pickedAdapter.itemList = it
+                binding.rvPickedList.adapter = pickedAdapter
+            }
         }
 
         binding.rvPickedList.apply {
@@ -48,14 +56,10 @@ class MyBoxFragment : Fragment() {
         }
     }
 
-    private fun itemOnClick(documentEntity: DocumentEntity, position: Int){
+    private fun itemOnClick(documentEntity: DocumentModel, position: Int){
         imageSearchViewModel.apply{
             removeImage(documentEntity)
-            switchLikeByUrl(documentEntity.thumbnailUrl)
         }
-        pickedAdapter.apply{
-            notifyItemRemoved(position)
-            notifyItemRangeChanged(position, itemCount)
-        }
+        pickedAdapter.notifyItemRemoved(position)
     }
 }

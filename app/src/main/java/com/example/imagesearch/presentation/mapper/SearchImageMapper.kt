@@ -1,21 +1,28 @@
 package com.example.imagesearch.presentation.mapper
 
-import com.example.imagesearch.data.remote.Documents
-import com.example.imagesearch.data.remote.ImageModel
-import com.example.imagesearch.presentation.entity.DocumentEntity
-import com.example.imagesearch.presentation.entity.ImageModelEntity
+import com.example.imagesearch.data.model.DocumentsResponse
+import com.example.imagesearch.data.model.ImageResponse
+import com.example.imagesearch.data.model.MetaResponse
+import com.example.imagesearch.presentation.entity.DocumentModel
+import com.example.imagesearch.presentation.entity.ImageModel
+import com.example.imagesearch.presentation.entity.MetaModel
 
-fun List<Documents>.asEntity(): List<DocumentEntity> {
+fun List<DocumentsResponse>.asModel(): List<DocumentModel> {
     return map {
-        DocumentEntity(
-            it.thumbnailUrl,
-            it.siteName,
-            it.dateTime
+        DocumentModel(
+            thumbnailUrl = it.thumbnailUrl,
+            siteName = it.siteName,
+            dateTime = it.dateTime
         )
     }
 }
+fun MetaResponse.toModel(): MetaModel {
+    return MetaModel(
+        isEnd, pageableCount, totalCount
+    )
+}
 
-fun ImageModel.toEntity() = ImageModelEntity(
-    meta = meta,
-    items = documents.asEntity()
+fun ImageResponse.toModel() = ImageModel(
+    meta = meta.toModel(),
+    items = documents.asModel()
 )

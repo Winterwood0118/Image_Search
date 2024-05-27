@@ -2,34 +2,49 @@ package com.example.imagesearch.presentation.main
 
 import android.content.Context
 import android.os.Bundle
+import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.view.inputmethod.InputMethodManager
 import android.widget.Toast
+import androidx.core.widget.doAfterTextChanged
 import androidx.fragment.app.activityViewModels
+import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.GridLayoutManager
 import com.example.imagesearch.databinding.FragmentImageSearchBinding
-import com.example.imagesearch.presentation.entity.DocumentEntity
+import com.example.imagesearch.presentation.entity.DocumentModel
+import dagger.hilt.android.AndroidEntryPoint
+import kotlinx.coroutines.flow.collectLatest
+import kotlinx.coroutines.launch
 
+@AndroidEntryPoint
 
 class ImageSearchFragment : Fragment() {
     private var _binding: FragmentImageSearchBinding? = null
     private val binding get() = _binding!!
-    private val imageItemAdapter: ImageItemAdapter by lazy {
-        ImageItemAdapter { documentEntity, position -> itemOnClick(documentEntity, position) }
-    }
 
-    private val imageSearchViewModel by activityViewModels<ImageSearchViewModel> ()
+    private val imageSearchViewModel by activityViewModels<ImageSearchViewModel>()
+
+    private val searchPagingAdapter by lazy {
+        SearchPagingAdapter { documentEntity, position ->
+            itemOnClick(documentEntity, position)
+        }
+    }
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
         _binding = FragmentImageSearchBinding.inflate(inflater, container, false)
-        initView()
         return binding.root
+    }
+
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+        initView()
+        initViewModel()
     }
 
     private fun hideKeyboard() {
@@ -39,30 +54,13 @@ class ImageSearchFragment : Fragment() {
     }
 
     private fun initView() {
-        binding.btnSearch.setOnClickListener {
-            val string = binding.etSearch.text.toString()
-            if (string.replace(" ", "") == "") {
-                binding.etSearch.text.clear()
-                Toast.makeText(requireActivity(), "검색어를 입력해주세요", Toast.LENGTH_SHORT).show()
-            } else {
-                imageSearchViewModel.apply {
-                    getImageModelList(string)
-                    setLastSearchWord(string)
-                }
-                hideKeyboard()
+        binding.etSearch.apply {
+            setText(imageSearchViewModel.lastSearchWord.value)
+            doAfterTextChanged {
+                imageSearchViewModel.setQuery(text.trim().toString())
             }
         }
 
-        imageSearchViewModel.imageModel.observe(requireActivity()) {
-            imageItemAdapter.itemList = it
-            binding.rvImageList.adapter?.notifyDataSetChanged()
-        }
-
-        binding.rvImageList.apply {
-            adapter = imageItemAdapter
-            layoutManager = GridLayoutManager(requireActivity(), 2)
-        }
-        binding.etSearch.setText(imageSearchViewModel.lastSearchWord.value)
     }
 
     override fun onDestroyView() {
@@ -70,10 +68,23 @@ class ImageSearchFragment : Fragment() {
         _binding = null
     }
 
-    private fun itemOnClick(documentEntity: DocumentEntity, position: Int) {
-        documentEntity.isLike = !documentEntity.isLike
-        if (documentEntity.isLike) imageSearchViewModel.pickImage(documentEntity)
-        else imageSearchViewModel.removeImage(documentEntity)
-        imageItemAdapter.notifyItemChanged(position)
+    private fun itemOnClick(documentEntity: DocumentModel, position: Int) {
+        imageSearchViewModel.apply {
+            pickImage(documentEntity)
+        }
+    }
+
+    private fun initViewModel(){
+        binding.rvImageList.apply {
+            adapter = searchPagingAdapter
+            layoutManager = GridLayoutManager(requireActivity(), 2)
+        }
+        viewLifecycleOwner.lifecycleScope.launch {
+            Log.d("ImageSearchFragment", "Paging data collected?")
+            imageSearchViewModel.pagingDataFlow.collect {
+                searchPagingAdapter.submitData(it)
+                Log.d("ImageSearchFragment", "${searchPagingAdapter.itemCount}")
+            }
+        }
     }
 }
