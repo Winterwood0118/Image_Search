@@ -29,18 +29,20 @@ class SearchImageRepositoryImpl @Inject constructor(
 
     @OptIn(ExperimentalPagingApi::class)
     override suspend fun getPagingImageList(searchWord: String): Flow<PagingData<DocumentModel>> {
-        Log.d("paging", "페이징 해씀")
+        mediator.searchWord = searchWord
+        Log.d("paginger", "페이징 해씀")
+        Log.d("paginger", mediator.searchWord)
         return Pager(
             config = PagingConfig(
                 pageSize = 25
             ),
-            remoteMediator = mediator.apply { this.searchWord = searchWord },
+            remoteMediator = mediator,
             pagingSourceFactory = {
                 dataBase.responseDao().getAll()
             }
         ).flow.map { pagingData ->
             pagingData.map { documentsResponse ->
-                documentsResponse.toModel().also { Log.d("paging", "Log: ${it.thumbnailUrl}") }
+                documentsResponse.toModel().also { Log.d("paginger", "Log: ${it.thumbnailUrl}") }
             }
         }
 

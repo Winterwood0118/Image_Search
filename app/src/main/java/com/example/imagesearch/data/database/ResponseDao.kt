@@ -9,11 +9,11 @@ import com.example.imagesearch.data.model.DocumentsResponse
 @Dao
 interface ResponseDao {
     @Upsert
-    fun insertAll(list: List<DocumentsResponse>)
+    suspend fun insertAll(list: List<DocumentsResponse>)
 
-    @Query("DELETE FROM documentsResponse")
-    fun deleteAll()
+    @Query("DELETE FROM documentResponse")
+    suspend fun deleteAll()
 
-    @Query("SELECT * FROM documentsResponse")
+    @Query("SELECT * FROM documentResponse")
     fun getAll(): PagingSource<Int, DocumentsResponse>
 }

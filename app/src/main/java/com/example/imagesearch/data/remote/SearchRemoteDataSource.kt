@@ -8,5 +8,7 @@ interface SearchRemoteDataSource {
     @GET("v2/search/image")
     suspend fun getImage(
         @Query("query") searchWord: String,
+        @Query("pageable_count") page: Int = 4,
+        @Query("total_count") size: Int = 25
     ): ImageResponse
 }

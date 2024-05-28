@@ -54,7 +54,7 @@ class SearchPagingAdapter(private val onClick: (DocumentModel, Int) -> Unit) :
     }
 
     override fun onBindViewHolder(holder: SearchPagingHolder, position: Int) {
-        val item = getItem(position)!!
+        val item = getItem(position)?: DocumentModel("", "", "2023-08-09T00:09:38.000+09:00")
         Log.d("itemBinding", "${item.thumbnailUrl}")
         holder.bind(item)
     }

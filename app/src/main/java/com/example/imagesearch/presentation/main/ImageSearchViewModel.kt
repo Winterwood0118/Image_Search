@@ -6,7 +6,6 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import androidx.paging.cachedIn
-import androidx.room.Query
 import com.example.imagesearch.presentation.entity.DocumentModel
 import com.example.imagesearch.presentation.mapper.asEntity
 import com.example.imagesearch.presentation.repository.CacheRepository
@@ -14,10 +13,7 @@ import com.example.imagesearch.presentation.repository.SearchImageRepository
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.flow.MutableSharedFlow
-import kotlinx.coroutines.flow.SharedFlow
 import kotlinx.coroutines.flow.asSharedFlow
-import kotlinx.coroutines.flow.collect
-import kotlinx.coroutines.flow.flatMapConcat
 import kotlinx.coroutines.flow.flatMapLatest
 import kotlinx.coroutines.launch
 import javax.inject.Inject
@@ -56,13 +52,9 @@ class ImageSearchViewModel @Inject constructor(
         }
     }
 
+    @OptIn(ExperimentalCoroutinesApi::class)
     val pagingDataFlow = queryFlow.flatMapLatest { s ->
-        searchImageRepository.getPagingImageList(s).also { pagingDataFlow1 ->
-            pagingDataFlow1.collect{
-                Log.d("ImageSearchViewModel", "pagingDataFlow: $it")
-            }
-        }
-    }.cachedIn(viewModelScope)
+        searchImageRepository.getPagingImageList(s)}.cachedIn(viewModelScope)
 
     fun setLastSearchWord(searchWord: String) {
         _getLastSearchWord.value = searchWord

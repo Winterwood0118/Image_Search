@@ -1,6 +1,5 @@
 package com.example.imagesearch.data.remote
 
-import android.util.Log
 import androidx.paging.ExperimentalPagingApi
 import androidx.paging.LoadType
 import androidx.paging.PagingState
@@ -37,18 +36,14 @@ class SearchRemoteMediator @Inject constructor(
         try {
             val page = remoteKey?.nextPage ?: 1
             val loadSize = 25
-            val response = searchRemoteDataSource.getImage(searchWord)
+            val response = searchRemoteDataSource.getImage(searchWord, loadSize)
             val responseList = response.documents
-            Log.d("response", "$searchWord")
             if (loadType == LoadType.REFRESH){
                 responseDao.deleteAll()
                 remoteKeyDao.deleteAll()
-                Log.d("response", "delete")
-
             }
             remoteKeyDao.insert(RemoteKey(nextPage = page + 1))
             responseDao.insertAll(responseList)
-            Log.d("response", "List: $responseList")
 
             return MediatorResult.Success(responseList.isEmpty())
         }catch (e: Exception){

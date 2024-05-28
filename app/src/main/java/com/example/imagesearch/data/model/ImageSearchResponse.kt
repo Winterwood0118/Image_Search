@@ -8,7 +8,7 @@ data class ImageResponse(
     @SerializedName("meta") val meta: MetaResponse,
     @SerializedName("documents") val documents: List<DocumentsResponse>
 )
-@Entity
+@Entity(tableName = "documentResponse")
 data class DocumentsResponse(
     @PrimaryKey(autoGenerate = true) val uid: Long,
     @SerializedName("thumbnail_url") val thumbnailUrl: String,
